@@ -32,8 +32,6 @@ class Preprocess:
     def preprocess(self, fileName, verbose):
         file = open(fileName)
         for i, p in enumerate(file):
-            if i==100:
-              break
             if i%10000 == 0 and verbose:
                 print(".", end="")
             paper = json.loads(p)
