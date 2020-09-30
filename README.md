@@ -5,4 +5,4 @@
 	` make -f Makefile-Embeddings `
 
 3. To create document vector:
-	`make -g Makefile-Preprocessing	`
+	`make -f Makefile-Preprocessing	`
