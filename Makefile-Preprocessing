@@ -1,0 +1,8 @@
+dataset_w_features: datasets/feature_vector_balanced_1000.pickle
+
+
+datasets/feature_vector_balanced_1000.pickle: datasets/random_sample_preprocessed.pickle datasets/unsupervised_30000_words.kv
+	python3 Classifier/feature_embeddings.py $@ $^ 
+
+datasets/random_sample_preprocessed.pickle: datasets/arxiv-metadata-oai-snapshot.json
+	python3 Classifier/create_samples.py $@ $< 1000
