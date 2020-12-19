@@ -6,3 +6,9 @@
 
 3. To create document vector:
 	`make -f Makefile-Preprocessing	`
+
+4. To train the model:
+	`make -f Makefile-Train	`
+
+5. To make predictions:
+	`make -f Makefile-Predict`

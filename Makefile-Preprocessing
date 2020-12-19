@@ -1,5 +1,7 @@
-dataset_w_features: datasets/feature_vector_balanced_1000.pickle
+dataset: datasets/OneHotEnc.csv
 
+datasets/OneHotEnc.csv: datasets/feature_vector_balanced_1000.pickle
+	python3 Classifier/onehotenc.py $@ $<
 
 datasets/feature_vector_balanced_1000.pickle: datasets/random_sample_preprocessed.pickle datasets/unsupervised_30000_words.kv
 	python3 Classifier/feature_embeddings.py $@ $^ 
