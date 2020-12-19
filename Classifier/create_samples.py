@@ -8,11 +8,26 @@ from LearnEmbeddings.feature_preprocess import Preprocess
 
 
 class CreateSample:
+	"""
+	Given a data, preprocesses it and creates a balanced data if required
+	"""
+	
 	def __init__(self, sample_size=None):
 		self.sample_size = sample_size
 
 
 	def create_sample(self, imp_file, verbose=True):
+		"""
+		creates a balanced sample for each class and returns the sampled data
+
+		Parameters:
+		inp_file: path to input file containing imbalanced data
+		verbose: [default: True] show the progress report
+
+		Returns:
+		sampled_data: python dictionart containing id, preprocessed content and categories of the balanced data
+		"""
+
 		file = open(imp_file)
 		sampled_data = defaultdict(list)
 		pp = Preprocess()
@@ -32,6 +47,7 @@ class CreateSample:
 			if i%100000 == 0 and verbose:
 				print(".", end=" ")
 
+		# if the sample size is given, create a balanced sample
 		if not self.sample_size is None:
 			for i in sampled_data:
 				sampled_data[i] = random.sample(sampled_data[i], 
@@ -41,6 +57,14 @@ class CreateSample:
 
 
 	def create_sample_to_file(self, inp_file, op_file):
+		"""
+		Create balanced data and store in a file
+
+		Parameters:
+		inp_file: path to input file containing imbalanced data
+		op_file: path to the destination for the file contaioning balanced data
+		"""
+
 		sampled_data = self.create_sample(inp_file)
 		with open(op_file, 'wb') as handle:
 			pickle.dump(sampled_data, handle, protocol=pickle.HIGHEST_PROTOCOL)

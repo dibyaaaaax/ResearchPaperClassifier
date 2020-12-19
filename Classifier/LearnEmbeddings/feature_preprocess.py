@@ -6,17 +6,33 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import nltk
 
-nltk.download('stopwords')
-nltk.download('punkt')
-
 
 class Preprocess:
+    """
+    Preprocesses the json file downoaded from Arxiv and makes it ready for Fasttext
+    """
     def __init__(self, sv=False):
+        """
+        Parameters:
+        sv: if set, the input to Fasttext will include the labels as well
+        """
+
         self.supervised = sv
         pass
 
 
     def basic_cleanup(self, doc):
+        """
+        Perform basic preprocessing on the text data
+        Parameters:
+        =========
+        doc: text to be cleaned up
+
+        returns;
+        =======
+        preprocessed text
+        """
+
         doc = doc.lower().strip()
         doc = doc.replace("-", " ")
         doc = re.sub(r'\d+', '', doc)
@@ -30,6 +46,15 @@ class Preprocess:
   
 
     def preprocess(self, fileName, verbose):
+        """
+        Cleans up the required text and make it ready for the input to fasttext. 
+        This data wil be used by fastttext to learn the word embeddings.
+
+        Parameters:
+        fileName: path to the json file from Arxiv
+        verbose: print the progress while processing the file
+        """
+
         file = open(fileName)
         for i, p in enumerate(file):
             if i%10000 == 0 and verbose:
@@ -39,16 +64,26 @@ class Preprocess:
             doc = self.basic_cleanup(doc)
             
             if self.supervised:
-              _categories = paper['categories'].split(" ")
-              categories = ["__label__" + cat for cat in _categories]
-              cat_str = " ".join(categories)
-              doc = cat_str + " " + doc
+                _categories = paper['categories'].split(" ")
+                categories = ["__label__" + cat for cat in _categories]
+                cat_str = " ".join(categories)
+                doc = cat_str + " " + doc
 
             yield doc
 
 
 
     def preprocessFile(self, inputFile, outputFile, verbose=True):
+        """
+        call the preprocess function and store the results to appropriate locations
+
+        Parameter:
+        =========
+        inputFile: path to the input file
+        outputFile: path to the output file
+        verbose: [default: True] prints progress if set
+        """
+        
         op_file = open(outputFile, 'w')
         for doc in self.preprocess(inputFile, verbose):
             op_file.write(doc + "\n")

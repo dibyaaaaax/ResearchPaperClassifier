@@ -3,6 +3,13 @@ import sys
 
 
 def vec_to_gensim(input_path, output_path, limit=30000):
+	"""
+	Convert the output from fasttext to gensim format which is easy to read
+	Parameters:
+	input_path: path to the input file
+	output_path: path to the output gensim file
+	limit: number of most frequent words to keep. 
+	"""
     model = KeyedVectors.load_word2vec_format(input_path)
     model.save(output_path)
 

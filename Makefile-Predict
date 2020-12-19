@@ -1,0 +1,2 @@
+predictor: datasets/unsupervised_30000_words.kv Model/MLP_rpclassifier.model 
+	python3 Classifier/predictor.py $^
