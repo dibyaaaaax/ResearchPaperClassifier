@@ -66,12 +66,12 @@ Micro Precision : 0.97
 Macro Recall : 0.50
 Micro Recall : 0.58
 ```
-Ridge Classifier
+Random Forest Classifier
 ```sh
-Macro Precision : 0.96
-Micro Precision : 0.75
-Macro Recall : 0.36
-Micro Recall : 0.37
+Macro Precision : 0.83
+Micro Precision : 0.82
+Macro Recall : 0.15
+Micro Recall : 0.14
 ```
 
 <!-- GETTING STARTED -->
