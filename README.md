@@ -37,7 +37,7 @@ Number of data in each category. Number of categories for each data. Word cloud 
 Fasttext was used to learn the 100 dimensional word embeddings on the entire dataset of 1.7 million articles. Vocabulary of 30000 most frequent words were retained.
 Feature for each document (Abstract + Title) was calculated as the average of all the words in the document.
 
-### Training
+### Training of the Model
 The problem statement was decomposed into multiple independent classification problems. 
 By using one vs rest classifier and logistic regression, for each label, a model was trained and tested on unseen data. Various evaluation metrics were analyzed. Eg: Micro and Macro Precision
 
