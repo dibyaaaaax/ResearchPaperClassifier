@@ -123,8 +123,8 @@ def train_model(model, df, test_size=0.2):
 	X_test  = test.iloc[:,1:101]
 	y_test = test.iloc[:,101:]
 
-	model.fit(X_train, y_train)
-	#model = pickle.load(open("Model/LSVC_rpclassifier.model", "rb"))
+	#model.fit(X_train, y_train)
+	model = pickle.load(open("Model/MLP_rpclassifier.model", "rb"))
 	y_pred = model.predict(X_test)
 	# print(np.array(X_test)[0])
 	# print(test_id[0], np.array(X_test)[0].shape)
@@ -135,7 +135,7 @@ def train_model(model, df, test_size=0.2):
 	df["id"] = test_id
 	df["Actual Value"] = yactual
 	df["Predicted Value"] = ypred 
-	df.to_csv("datasets/results.csv")
+	#df.to_csv("datasets/results.csv")
 	evaluation_metric(np.array(y_test), y_pred)
 
 	return model
@@ -153,7 +153,7 @@ def main():
 	m = OneVsRestClassifier(estimator(**params), n_jobs=-1)
 	model = train_model(m, df)
 
-	pickle.dump(model, open(op_file, 'wb'))
+	#pickle.dump(model, open(op_file, 'wb'))
 
 
 

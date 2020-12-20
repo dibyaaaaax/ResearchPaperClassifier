@@ -5,7 +5,7 @@ import pickle
 import json
 import arxiv
 
-from LearnEmbeddings.feature_preprocess import Preprocess
+from Classifier.LearnEmbeddings.feature_preprocess import Preprocess
 
 
 def predict(data, vec_file, model, targets):
@@ -53,6 +53,7 @@ def predict(data, vec_file, model, targets):
 	return classes
 
 
+
 def main():
 	vec_file = sys.argv[1]
 	model_file = sys.argv[2]
@@ -70,6 +71,19 @@ def main():
 	classes = predict(data, vec_file, model, targets['Labels'])
 	print(classes)
 
+def run(ids):
+	vec_file = "datasets/unsupervised_30000_words.kv"
+	model_file = "Model/LSVC_rpclassifier.model"
 
-if __name__ == '__main__':
-	main()
+	doc = arxiv.query(id_list=[ids])
+	title = doc[0]['title']
+	abstract = doc[0]['summary']
+
+	# load all the necessary files and make the predictin
+	data = " ".join([title, abstract])
+	model = pickle.load(open(model_file, 'rb'))
+	targets = json.load(open("datasets/targets.json"))
+	classes = predict(data, vec_file, model, targets['Labels'])
+	return (classes)
+# if __name__ == '__main__':
+# 	main()
