@@ -30,7 +30,7 @@ def predict(data, vec_file, model, targets):
 	keyed_vec = KeyedVectors.load(vec_file)
 	sum_arr = np.zeros(keyed_vec.vector_size)
 
-	content = data
+	content = '</s> ' + data
 	content = content.strip("\n").split(" ")
 	total_words = 0
 
@@ -41,11 +41,14 @@ def predict(data, vec_file, model, targets):
 			sum_arr += keyed_vec[cont]
 
 	features = np.array([sum_arr/total_words])
+	print(features)
 
 	#predict the labels and get the probabilities
 	pred = model.predict(features)
-	pred_proba = model.predict_proba(features)
-	classes = [(targets[idx], pred_proba[0][idx]) for idx in range(len(pred[0])) if pred[0][idx] == 1]
+	# pred_proba = model.predict_proba(features)
+	# classes = [(targets[idx], pred_proba[0][idx]) for idx in range(len(pred[0])) if pred[0][idx] == 1]
+	classes = [targets[idx] for idx in range(len(pred[0])) if pred[0][idx] == 1]
+
 
 	return classes
 

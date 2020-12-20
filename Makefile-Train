@@ -1,5 +1,3 @@
-model: Model/rpclassifier.model
-
-Model/rpclassifier.model: datasets/OneHotEnc.csv
+Model/LSVC_rpclassifier.model: datasets/OneHotEnc.csv
 	python3 Classifier/train_model.py $@ $< 
 

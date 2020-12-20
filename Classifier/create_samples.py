@@ -27,13 +27,11 @@ class CreateSample:
 		Returns:
 		sampled_data: python dictionart containing id, preprocessed content and categories of the balanced data
 		"""
-
+		print(self.sample_size)
 		file = open(imp_file)
 		sampled_data = defaultdict(list)
 		pp = Preprocess()
 		for i, p in enumerate(file):
-			if i>100:
-				break
 			paper = json.loads(p)
 			categories = paper['categories'].split(" ")
 			dic = {

@@ -17,6 +17,8 @@ def onehotenc(inp_file, op_file, target):
 	op_file: path where the op dataframe is to be saved
 	target: python dictionary containing list of all the labels
 	"""
+
+	op_file = open(op_file, "w")
 	veclen = len(inp_file["feature_vector"][0])
 	labels_list = target['Labels']
 	features_list = ["feature_" + str(i) for i in range(1, veclen+1)]
@@ -25,15 +27,23 @@ def onehotenc(inp_file, op_file, target):
 	for f in range(len(inp_file["categories"])):
 		label = inp_file["categories"][f]
 		content = inp_file["feature_vector"][f]
+		ids = np.array(["id-" + inp_file["id"][f]])
+
 		label_idx = [0]*len(labels_list)
 		for l in label:
 			idx = labels_list.index(l)
 			label_idx[idx] = 1
-		temp = np.concatenate((content, label_idx),axis = 0)
-		df.append(temp)
+		temp = np.concatenate((ids, content),axis = 0)
+		temp = np.concatenate((temp, label_idx),axis = 0)
+		temp_str = ",".join(temp)
 
-	df = DataFrame(df,columns = features_list+labels_list)
-	df.to_csv(op_file, index = False)
+		op_file.write(temp_str + "\n")
+
+	# 	print(temp_str)
+	# 	df.append(temp)
+
+	# df = DataFrame(df,columns = ["id"] + features_list+labels_list)
+	# df.to_csv(op_file, index = False)
 
 
 def main():

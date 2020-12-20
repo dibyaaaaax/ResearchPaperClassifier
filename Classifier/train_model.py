@@ -12,6 +12,7 @@ import pickle
 import numpy as np
 import pandas as pd
 import sys
+import json
 
 
 def get_confMatrix(y_act, y_pred):
@@ -79,6 +80,25 @@ def evaluation_metric(y_act, y_pred):
 	print("RecallMacroAvg : ", RecallMacro)
 
 
+def convert_to_categories(matrix):
+  y = [] 
+  target = json.load(open("datasets/targets.json"))
+  categories = target['Labels']
+  for i in range(matrix.shape[0]):
+    temp = []
+    for j in range(matrix.shape[1]):
+      # print(matrix[i])
+      if(matrix[i][j] == 1):
+        temp.append(categories[j])
+    if(len(temp) == 0):
+      temp.append("None")
+    y.append(temp)
+  return y
+
+
+
+
+
 
 def train_model(model, df, test_size=0.2):
 	"""
@@ -94,14 +114,28 @@ def train_model(model, df, test_size=0.2):
 	model: trained model
 	"""
 	
-	train, test = train_test_split(df, test_size=test_size)
-	X_train  = train.iloc[:,:100]
-	y_train = train.iloc[:,100:]
-	X_test  = test.iloc[:,:100]
-	y_test = test.iloc[:,100:]
+	train, test = train_test_split(df, test_size=test_size, random_state=42)
+	train_id = train.iloc[:,0]
+	test_id = test.iloc[:,0]
+
+	X_train  = train.iloc[:,1:101]
+	y_train = train.iloc[:,101:]
+	X_test  = test.iloc[:,1:101]
+	y_test = test.iloc[:,101:]
 
 	model.fit(X_train, y_train)
+	#model = pickle.load(open("Model/LSVC_rpclassifier.model", "rb"))
 	y_pred = model.predict(X_test)
+	# print(np.array(X_test)[0])
+	# print(test_id[0], np.array(X_test)[0].shape)
+	# input()
+	ypred = convert_to_categories(y_pred)
+	yactual = convert_to_categories(np.array(y_test))
+	df = pd.DataFrame()
+	df["id"] = test_id
+	df["Actual Value"] = yactual
+	df["Predicted Value"] = ypred 
+	df.to_csv("datasets/results.csv")
 	evaluation_metric(np.array(y_test), y_pred)
 
 	return model
@@ -112,10 +146,10 @@ def main():
 	inp_file = sys.argv[2]
 	df = pd.read_csv(inp_file)
 
-	# estimator = LinearSVC
-	# params = {'verbose': 2}
-	estimator = MLPClassifier
-	params = {'hidden_layer_sizes': (200, 50), 'random_state': 1, 'max_iter': 100, 'verbose': True}
+	estimator = LinearSVC
+	params = {'verbose': 2}
+	# estimator = MLPClassifier
+	# params = {'hidden_layer_sizes': (200, 50), 'random_state': 1, 'max_iter': 100, 'verbose': True}
 	m = OneVsRestClassifier(estimator(**params), n_jobs=-1)
 	model = train_model(m, df)
 

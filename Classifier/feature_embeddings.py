@@ -29,9 +29,9 @@ def sampled_to_features(file, keyed_vec, verbose=True):
 			print(".", end=" ")
 
 		# take the average of all vectors correponding to each word in the text
-		sum_arr = np.zeros(keyed_vec.vector_size)
-		total_words = 0
 		for dic in file[category]:
+			sum_arr = np.zeros(keyed_vec.vector_size)
+			total_words = 0
 			content = '</s> ' + dic['content']
 			content = content.strip("\n").split(" ")
 
@@ -41,6 +41,7 @@ def sampled_to_features(file, keyed_vec, verbose=True):
 					sum_arr += keyed_vec[cont]
 
 			# add features and categories to a dictionary
+			sampled_data["id"].append(dic["id"])
 			sampled_data["categories"].append(dic['categories'])    
 			sampled_data["feature_vector"].append(sum_arr/total_words)
 			
