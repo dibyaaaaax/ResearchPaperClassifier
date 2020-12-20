@@ -80,27 +80,8 @@ def evaluation_metric(y_act, y_pred):
 	print("RecallMacroAvg : ", RecallMacro)
 
 
-def convert_to_categories(matrix):
-  y = [] 
-  target = json.load(open("datasets/targets.json"))
-  categories = target['Labels']
-  for i in range(matrix.shape[0]):
-    temp = []
-    for j in range(matrix.shape[1]):
-      # print(matrix[i])
-      if(matrix[i][j] == 1):
-        temp.append(categories[j])
-    if(len(temp) == 0):
-      temp.append("None")
-    y.append(temp)
-  return y
 
-
-
-
-
-
-def train_model(model, df, test_size=0.2):
+def evaluate_model(model, df, test_size=0.2):
 	"""
 	Fits the train data on the given model and prints the results of evaluation metrics
 	Parameters;
@@ -123,34 +104,20 @@ def train_model(model, df, test_size=0.2):
 	X_test  = test.iloc[:,1:101]
 	y_test = test.iloc[:,101:]
 
-	model.fit(X_train, y_train)
-	#model = pickle.load(open("Model/MLP_rpclassifier.model", "rb"))
 	y_pred = model.predict(X_test)
-	# print(np.array(X_test)[0])
-	# print(test_id[0], np.array(X_test)[0].shape)
-	# input()
-	ypred = convert_to_categories(y_pred)
-	yactual = convert_to_categories(np.array(y_test))
-	df = pd.DataFrame()
-	df["id"] = test_id
-	df["Actual Value"] = yactual
-	df["Predicted Value"] = ypred 
-	#df.to_csv("datasets/results.csv")
+
 	evaluation_metric(np.array(y_test), y_pred)
 
 	return model
 
 
 def main():
-	op_file = sys.argv[1]
-	inp_file = sys.argv[2]
+	op_file = 'Model/LSVC_rpclassifier.model'
+	inp_file = 'datasets/OneHotEnc.csv'
 	df = pd.read_csv(inp_file)
 
-	estimator = LinearSVC
-	params = {'verbose': 2}
-
-	m = OneVsRestClassifier(estimator(**params), n_jobs=-1)
-	model = train_model(m, df)
+	m = pickle.load(open(op_file, "rb"))
+	model = evaluate_model(m, df)
 
 	pickle.dump(model, open(op_file, 'wb'))
 
