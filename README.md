@@ -17,7 +17,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-An automated system which can do tagging of research papers. It gives multiple labels to a research paper classifier using the title and abstract of the research paper.
+An automated system which can do tagging of research papers. It gives multiple labels to a research paper using the title and abstract of the research paper.
 
 
 ### Built With
