@@ -10,7 +10,7 @@
   * [Evaluation Metrics](#evaluation-metrics)
 * [Getting Started](#getting-started)
   * [Installation](#installation)
-  * [Reproduce Results and Visualizaton](#Reproduce Results and Visualizaton)
+  * [Reproduce Results and Visualizaton](#Reproduce-Results-and-Visualizaton)
 
 
 
