@@ -28,10 +28,11 @@ def sampled_to_features(file, keyed_vec, verbose=True):
 		if i%100000 == 0 and verbose:
 			print(".", end=" ")
 
+		sum_arr = np.zeros(keyed_vec.vector_size)
+		total_words = 0
 		# take the average of all vectors correponding to each word in the text
 		for dic in file[category]:
-			sum_arr = np.zeros(keyed_vec.vector_size)
-			total_words = 0
+			
 			content = '</s> ' + dic['content']
 			content = content.strip("\n").split(" ")
 
